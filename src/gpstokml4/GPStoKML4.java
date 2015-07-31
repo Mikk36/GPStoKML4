@@ -40,7 +40,8 @@ public class GPStoKML4 {
                             System.out.println("No log files found!");
                         }                       
                 break;
-                case "-h":                    
+                case "-h":
+                case "-?":
                     System.out.println("GPStoKML version 4.0");
                     System.out.println("(c) 2015 Marko Livental ");
                     System.out.println("Generates map or speed KML file from camera Mini 0803 log files.");
