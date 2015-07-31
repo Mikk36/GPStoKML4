@@ -19,39 +19,26 @@ public class GPStoKML4 {
     public static void main(String[] args) {
         // TODO code application logic here
         final long startTime = System.currentTimeMillis();
-        System.out.println("Waiting...");
         
-        ReadingFolder sp = new ReadingFolder();
-        List<Datapoint> myFiles = sp.importSourceFiles();  // My files
-        if(args.length > 0) {                     
+        if(args.length > 0) {
             switch (args[0]) {
-                case "map": {
-                    if(myFiles.size() > 0) {
-                        List<Datapoint> myFullList = sp.sourceFileBothReader(myFiles,0);  // All correct lines from source files
-                        KMLGenerator.build(myFullList);
-                    } else {
-                        System.out.println("No log files found!");
-                    }  
-                }
-                break;
-                case "speed": {
-                    if(myFiles.size() > 0) {
-                        List<Datapoint> myFullList = sp.sourceFileBothReader(myFiles, ReadingFolder.SPEED_LIMIT_KNOTS);  // All correct lines from source files
-                        KMLGenerator.speed(myFullList);
-                    } else {
-                        System.out.println("No log files found!");
-                    }                       
-                }    
-                break;
+                case "map":
+                case "speed":
                 case "both":
-                    if(myFiles.size() > 0) {
-                        List<Datapoint> myFullList = sp.sourceFileBothReader(myFiles, 0);  // All correct lines from source files
-                        KMLGenerator.build(myFullList);
-                        List<Datapoint> myFullSpeedList = sp.sourceFileBothReader(myFiles, ReadingFolder.SPEED_LIMIT_KNOTS);  // All correct lines from source files
-                        KMLGenerator.speed(myFullSpeedList);
-                    } else {
-                        System.out.println("No log files found!");
-                    }                       
+                    ReadingFolder sp = new ReadingFolder();
+                        List<Datapoint> myFiles = sp.importSourceFiles();           // My files
+                        if(myFiles.size() > 0) {
+                            if(args[0] == "map" || args[0] == "both") {
+                                List<Datapoint> myFullList = sp.sourceFileBothReader(myFiles, 0);  // All correct lines from source files
+                                KMLGenerator.build(myFullList);
+                            }
+                            if(args[0] == "speed" || args[0] == "both") {
+                                List<Datapoint> myFullSpeedList = sp.sourceFileBothReader(myFiles, ReadingFolder.SPEED_LIMIT_KNOTS);  // All correct lines from source files
+                                KMLGenerator.speed(myFullSpeedList);
+                            }
+                        } else {
+                            System.out.println("No log files found!");
+                        }                       
                 break;
                 case "-h":                    
                     System.out.println("GPStoKML version 4.0");
@@ -77,6 +64,8 @@ public class GPStoKML4 {
         } else {
             System.out.println("No command line arguments!");
             System.out.println("Create map kml file.");
+            ReadingFolder sp = new ReadingFolder();
+            List<Datapoint> myFiles = sp.importSourceFiles();           // My files
             if(myFiles.size() > 0) {
                 List<Datapoint> myFullList = sp.sourceFileBothReader(myFiles, 0);  // All correct lines from source files
                 KMLGenerator.build(myFullList);                
